@@ -517,3 +517,7 @@ body {
 .input-box input:-webkit-autofill ~ i {
     color: var(--secondary-color);
 }
+
+.input-box i.toggle-password.active {
+    color: var(--secondary-color);
+}

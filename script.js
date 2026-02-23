@@ -51,21 +51,17 @@ backButtons.forEach(btn => {
 });
 
 togglePasswordIcons.forEach(icon => {
-    icon.addEventListener('click', function() {
-        const passwordInput = this.parentElement.querySelector('input');
-        
-        const isPassword = passwordInput.getAttribute('type') === 'password';
-        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-        
-        if (isPassword) {
-            this.classList.remove('bx-lock');
-            this.classList.add('bx-lock-open-alt');
-            this.style.color = 'var(--secondary-color)';
-        } else {
-            this.classList.remove('bx-lock-open-alt');
-            this.classList.add('bx-lock');
-            this.style.color = 'var(--tertiary-color)';
-        }
+    icon.addEventListener('click', function () {
+
+        const input = this.parentElement.querySelector('input');
+        const isPassword = input.type === 'password';
+
+        input.type = isPassword ? 'text' : 'password';
+
+        this.classList.toggle('bx-lock');
+        this.classList.toggle('bx-show');
+
+        this.classList.toggle('active');
     });
 });
 
