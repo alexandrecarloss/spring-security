@@ -1,0 +1,28 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Login } from './pages/Login';
+import { LoginSuccess } from './pages/LoginSuccess';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/login-success" element={<LoginSuccess />} />
+        
+        {/* Rota protegida temporária (Dashboard) */}
+        <Route path="/dashboard" element={
+          <div style={{ padding: '20px' }}>
+            <h1>🎉 Logado com Sucesso!</h1>
+            <p>Seu token JWT já está no LocalStorage.</p>
+            <button onClick={() => { localStorage.clear(); window.location.href = '/login'; }}>Sair</button>
+          </div>
+        } />
+
+        {/* Redireciona qualquer rota desconhecida para o login */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
