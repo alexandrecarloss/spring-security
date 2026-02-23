@@ -3,9 +3,7 @@
 :root {
   --cor-principal: #081b29;
   --cor-secundaria: #0ef;
-  --cor-terciaria: red;
-  --cor-quarta: #fff;
-  --cor-quinta: seagreen;
+  --cor-terciaria: #fff;
 }
 
 * {
@@ -92,7 +90,7 @@ body {
 
 .form-box h2 {
     font-size: 32px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     text-align: center;
 }
 
@@ -109,10 +107,10 @@ body {
     background: transparent;
     border: none;
     outline: none;
-    border-bottom: 2px solid var(--cor-quarta);
+    border-bottom: 2px solid var(--cor-terciaria);
     padding-right: 23px;
     font-size: 16px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     font-weight: 500;
     transition: .5s;
 }
@@ -128,7 +126,7 @@ body {
     left: 0;
     transform: translateY(-50%);
     font-size: 16px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     pointer-events: none;
     transition: .5s;
 }
@@ -145,7 +143,7 @@ body {
     right: 0;
     transform: translateY(-50%);
     font-size: 18px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     transition: .5s;
 }
 
@@ -164,7 +162,7 @@ body {
     border-radius: 40px;
     cursor: pointer;
     font-size: 16px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     font-weight: 600;
     z-index: 1;
     overflow: hidden;
@@ -188,7 +186,7 @@ body {
 
 .form-box .logreg-link {
     font-size: 14.5px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     text-align: center;
     margin: 20px 0 10px;
 }
@@ -262,14 +260,14 @@ body {
 
 .info-text h2 {
     font-size: 36px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
     line-height: 1.3;
     text-transform: uppercase;
 }
 
 .info-text p {
     font-size: 16px;
-    color: var(--cor-quarta);
+    color: var(--cor-terciaria);
 }
 
 .wrapper .bg-animated {
@@ -325,8 +323,6 @@ body {
         padding: 40px;
     }
 
-    /* Esconde o texto de info no mobile para economizar espaço ou 
-       você pode reposicioná-los. Aqui vamos focar no formulário. */
     .wrapper .info-text {
         display: none; 
     }
@@ -335,9 +331,8 @@ body {
         padding: 0 40px;
     }
 
-    /* Ajuste da animação de fundo para não quebrar o layout mobile */
     .wrapper .bg-animated {
-        display: none; /* Simplifica o fundo no mobile */
+        display: none; 
     }
     
     .wrapper .bg-animated2 {
@@ -345,7 +340,6 @@ body {
     }
 }
 
-/* 2. Ajuste para telas muito pequenas (Phones) */
 @media (max-width: 480px) {
     .form-box h2 {
         font-size: 28px;
