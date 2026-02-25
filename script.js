@@ -20,6 +20,7 @@ loginLink.addEventListener('click', () => {
 forgotBtn.addEventListener('click', (e) => {
     e.preventDefault();
     wrapper.classList.add('show-forgot');
+    document.querySelector('.form-box.login').style.display = 'none';
 });
 
 backToLogin.addEventListener('click', (e) => {
@@ -31,12 +32,11 @@ forgotForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
     const submitBtn = forgotForm.querySelector('.btn');
-    
+
     submitBtn.classList.add('loading');
     
     setTimeout(() => {
         submitBtn.classList.remove('loading');
-        
         wrapper.classList.remove('show-forgot');
         wrapper.classList.add('show-success');
     }, 2000);

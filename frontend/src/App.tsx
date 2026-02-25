@@ -1,13 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { LoginSuccess } from './pages/LoginSuccess';
+import { AuthLayout } from "./layouts/AuthLayout";
+
 
 function App() {
   return (
     <BrowserRouter>
+    
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/login-success" element={<LoginSuccess />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/login-success" element={<LoginSuccess />} />
+        </Route>
         
         {/* Rota protegida temporária (Dashboard) */}
         <Route path="/dashboard" element={

@@ -28,11 +28,9 @@ public class TokenController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         var user = userRepository.findByEmail(loginRequest.email());
-
         if (user.isEmpty() || !user.get().isLoginCorrect(loginRequest, passwordEncoder)) {
             throw new BadCredentialsException("E-mail or password is invalid");
         }
-
         var jwtValue = jwtService.generateToken(user.get());
 
         return ResponseEntity.ok(new LoginResponse(jwtValue, 300L));

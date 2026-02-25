@@ -27,15 +27,6 @@
             data-login_uri="https://your.domain/your_login_endpoint"
             data-auto_prompt="false"
           ></div>
-          <div
-            class="g_id_signin"
-            data-type="standard"
-            data-size="large"
-            data-theme="outline"
-            data-text="sign_in_with"
-            data-shape="rectangular"
-            data-logo_alignment="left"
-          ></div>
         </div>
         <form action="#">
           <!-- First content -->
@@ -97,15 +88,6 @@
             data-client_id="YOUR_GOOGLE_CLIENT_ID"
             data-login_uri="https://your.domain/your_login_endpoint"
             data-auto_prompt="false"
-          ></div>
-          <div
-            class="g_id_signin"
-            data-type="standard"
-            data-size="large"
-            data-theme="outline"
-            data-text="sign_in_with"
-            data-shape="rectangular"
-            data-logo_alignment="left"
           ></div>
         </div>
         <form action="#">
@@ -172,7 +154,7 @@
       <div class="form-box forgot-password">
         <h2 class="animation" style="--i: 0; --j: 21">Reset Password</h2>
         <form action="#">
-          <p class="animation" style="--i: 1; --j: 22">
+          <p class="animation reset-email-text" style="--i: 1; --j: 22">
             Enter your email to receive a reset link.
           </p>
           <div class="input-box animation" style="--i: 2; --j: 23">
@@ -230,12 +212,22 @@
 
         google.accounts.id.renderButton(
           document.getElementById("googleBtnLogin"),
-          { theme: "outline", size: "large", width: 250 },
+          {
+            type: "icon",
+            shape: "circle",
+            theme: "filled_blue",
+            size: "large",
+          },
         );
 
         google.accounts.id.renderButton(
           document.getElementById("googleBtnRegister"),
-          { theme: "outline", size: "large", width: 250 },
+          {
+            type: "icon",
+            shape: "circle",
+            theme: "filled_blue",
+            size: "large",
+          },
         );
       };
     </script>

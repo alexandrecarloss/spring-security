@@ -33,14 +33,18 @@ public class JwtService {
                 .collect(Collectors.joining(" "));
 
         log.debug("Permissões (scopes) atribuídas ao token: [{}]", scopes);
-        var claims = JwtClaimsSet.builder()
+        var builder = JwtClaimsSet.builder()
                 .issuer("mybackend")
                 .subject(user.getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
-                .claim("scope", scopes)
-                .claim("picture", user.getPictureUrl())
-                .build();
+                .claim("scope", scopes);
+
+        if (user.getPictureUrl() != null) {
+            builder.claim("picture", user.getPictureUrl());
+        }
+
+        var claims = builder.build();
 
         String tokenValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
         log.info("Token JWT assinado com sucesso para o usuário: {}", user.getEmail());
