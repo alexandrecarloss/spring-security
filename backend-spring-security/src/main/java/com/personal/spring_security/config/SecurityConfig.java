@@ -49,6 +49,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/feed").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/tweets/**").permitAll()
+                                .requestMatchers("/ws-tweets/**").permitAll()
                                 .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
@@ -56,7 +59,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2LoginSuccessHandler))
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Mudança aqui!
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 );
         return http.build();
     }
@@ -67,6 +70,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

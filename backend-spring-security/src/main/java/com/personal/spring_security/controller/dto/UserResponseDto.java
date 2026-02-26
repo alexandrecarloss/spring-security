@@ -1,12 +1,14 @@
 package com.personal.spring_security.controller.dto;
 
 import com.personal.spring_security.entities.Role;
+import org.jspecify.annotations.Nullable;
+
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record UserResponseDto(
-        UUID userId,
+        UUID Id,
         String email,
         String fullName,
         String pictureUrl,

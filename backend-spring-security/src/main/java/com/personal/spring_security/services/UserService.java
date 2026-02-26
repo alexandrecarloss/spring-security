@@ -4,6 +4,7 @@ import com.personal.spring_security.controller.dto.CreateUserDto;
 import com.personal.spring_security.controller.dto.UserResponseDto;
 import com.personal.spring_security.entities.Role;
 import com.personal.spring_security.entities.User;
+import com.personal.spring_security.infrastructure.exceptions.UnprocessableEntityException;
 import com.personal.spring_security.repository.RoleRepository;
 import com.personal.spring_security.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -32,9 +33,16 @@ public class UserService {
     }
 
     @Transactional
-    public void createUser(CreateUserDto dto) {
+    public User createUser(CreateUserDto dto) {
+//        userRepository.findByEmail(dto.email()).ifPresent(user -> {
+//            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Email already exists");
+//        });
+
         userRepository.findByEmail(dto.email()).ifPresent(user -> {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Email already exists");
+            if (user.getPassword() == null) {
+                throw new UnprocessableEntityException("Este e-mail está vinculado ao login pelo Google. Use o botão 'Entrar com Google'.");
+            }
+            throw new UnprocessableEntityException("Este e-mail já está cadastrado.");
         });
 
         var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
@@ -45,7 +53,8 @@ public class UserService {
         user.setFullName(dto.fullName());
         user.setRoles(Set.of(basicRole));
 
-        userRepository.save(user);
+        User newUser = userRepository.save(user);
+        return newUser;
     }
 
     private User findEntityById(UUID id) {

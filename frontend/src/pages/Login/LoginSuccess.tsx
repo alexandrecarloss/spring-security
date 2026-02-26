@@ -14,7 +14,7 @@ export function LoginSuccess() {
       console.log("Token capturado com sucesso!");
       
       // Redireciona para a página principal
-      navigate("/dashboard");
+      navigate("/feed");
     } else {
       console.error("Token não encontrado na URL");
       navigate("/login");

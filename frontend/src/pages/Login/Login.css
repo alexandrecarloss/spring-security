@@ -6,7 +6,7 @@
   /* azul claro */
   /* --secondary-color: #0ef;  */
   /* cor creme */
-  /* --secondary-color: #F2F0EA; */
+  --secondary-color: #F2F0EA;
   /* cor laranja */
   /* --secondary-color: #FF921C; */
   /* cor amarela */
@@ -36,7 +36,7 @@
   /* cor heliotrópio   */
   /* --secondary-color: #EE72F8; */
   /* cor amarelo esverdeado */
-  --secondary-color: #BAFF39;
+  /* --secondary-color: #BAFF39; */
   /* cor azul marinho */
   /* --secondary-color: #01257D; */
   --tertiary-color: #fff;
@@ -138,7 +138,7 @@ body {
     position: relative;
     width: 100%;
     height: 50px;
-    margin: 25px 0;
+    margin: 15px 0;
 }
 
 .input-box input {

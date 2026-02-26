@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import "./Login.css";
-import { loginRequest, registerRequest } from "../services/authService";
+import { loginRequest, registerRequest } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 type CSSVars = React.CSSProperties & {
@@ -9,6 +9,7 @@ type CSSVars = React.CSSProperties & {
 };
 
 import { Envelope, Lock, Eye, User, CheckShield } from "@boxicons/react";
+import type { AxiosError } from "axios";
 
 export function Login() {
   // Estados para controlar as classes de animação do wrapper
@@ -20,11 +21,23 @@ export function Login() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   // Função para iniciar o Login com Google (Integração com seu Backend)
   const handleGoogleLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
+
+  const showToast = useCallback(
+    (message: string, type: "success" | "error" = "success") => {
+      setToast({ message, type });
+      setTimeout(() => setToast(null), 3000);
+    },
+    [],
+  );
 
   const navigate = useNavigate();
 
@@ -34,12 +47,12 @@ export function Login() {
 
       const data = await loginRequest(email, password);
 
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", data.accessToken);
 
-      navigate("/dashboard");
+      navigate("/feed");
     } catch (error) {
-      alert("Credenciais inválidas");
-      console.error("Credenciais inválidas", error)
+      showToast("Credenciais inválidas", "error");
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -51,10 +64,12 @@ export function Login() {
 
       await registerRequest(fullName, email, password);
 
-      alert("Conta criada com sucesso!");
+      showToast("Conta criada com sucesso!", "success");
       setIsActive(false);
-    } catch {
-      alert("Erro ao criar conta");
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const msg = error.response?.data?.message || "Erro desconhecido";
+      showToast(msg, "error");
     } finally {
       setLoading(false);
     }
@@ -203,7 +218,6 @@ export function Login() {
           >
             <input type="email" required placeholder=" " />
             <label>E-mail</label>
-            {/* <i className="bx bx-envelope"></i> */}
             <Envelope />
           </div>
           <div
@@ -318,6 +332,26 @@ export function Login() {
           Back to Login
         </button>
       </div>
+      {toast && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+            background:
+              toast.type === "success"
+                ? "var(--secondary-color)"
+                : "var(--alert-color)",
+            color: "var(--main-color)",
+            padding: "12px 20px",
+            borderRadius: 6,
+            fontWeight: "bold",
+            zIndex: 10000,
+          }}
+        >
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 }

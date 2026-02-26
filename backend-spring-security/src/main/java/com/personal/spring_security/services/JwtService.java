@@ -25,7 +25,7 @@ public class JwtService {
     public String generateToken(User user) {
         log.debug("Gerando claims para o Subject ID: {}", user.getId());
         var now = Instant.now();
-        var expiresIn = 300L; // 5 minutos
+        var expiresIn = 3600L;
 
         var scopes = user.getRoles()
                 .stream()

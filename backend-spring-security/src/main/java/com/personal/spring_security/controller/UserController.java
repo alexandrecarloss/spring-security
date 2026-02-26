@@ -7,7 +7,9 @@ import com.personal.spring_security.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,9 +24,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> newUser(@RequestBody CreateUserDto dto) {
-        userService.createUser(dto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserResponseDto> newUser(@RequestBody CreateUserDto dto) {
+        User user = userService.createUser(dto);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping
