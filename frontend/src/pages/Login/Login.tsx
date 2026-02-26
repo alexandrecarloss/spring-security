@@ -102,6 +102,7 @@ export function Login() {
               type="email"
               required
               placeholder=" "
+              maxLength={100}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -117,6 +118,7 @@ export function Login() {
               type={showPassword ? "text" : "password"}
               required
               placeholder=" "
+              maxLength={50}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -195,6 +197,7 @@ export function Login() {
               required
               placeholder=" "
               value={fullName}
+              maxLength={100}
               onChange={(e) => setFullName(e.target.value)}
             />
             <label>Name</label>
@@ -208,6 +211,7 @@ export function Login() {
             required 
             placeholder=" "
             value={email}
+            maxLength={100}
             onChange={(e) => setEmail(e.target.value)} />
             <label>E-mail</label>
             <Envelope />
@@ -221,6 +225,7 @@ export function Login() {
               required
               placeholder=" "
               value={password}
+              maxLength={50}
               onChange={(e) => setPassword(e.target.value)}
             />
             <label>Password</label>
@@ -281,7 +286,10 @@ export function Login() {
             className="input-box animation"
             style={{ "--i": 2, "--j": 23 } as CSSVars}
           >
-            <input type="email" required placeholder=" " />
+            <input type="email" 
+            required
+            placeholder=" "
+            maxLength={100} />
             <label>E-mail</label>
             <Envelope />
           </div>

@@ -34,9 +34,6 @@ public class UserService {
 
     @Transactional
     public User createUser(CreateUserDto dto) {
-//        userRepository.findByEmail(dto.email()).ifPresent(user -> {
-//            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Email already exists");
-//        });
 
         userRepository.findByEmail(dto.email()).ifPresent(user -> {
             if (user.getPassword() == null) {

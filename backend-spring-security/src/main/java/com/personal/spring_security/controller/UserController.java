@@ -4,6 +4,7 @@ import com.personal.spring_security.controller.dto.CreateUserDto;
 import com.personal.spring_security.controller.dto.UserResponseDto;
 import com.personal.spring_security.entities.User;
 import com.personal.spring_security.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> newUser(@RequestBody CreateUserDto dto) {
+    public ResponseEntity<UserResponseDto> newUser(@RequestBody @Valid CreateUserDto dto) {
         User user = userService.createUser(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable UUID id, @RequestBody CreateUserDto dto) {
+    public ResponseEntity<Void> updateUser(@PathVariable UUID id, @RequestBody @Valid CreateUserDto dto) {
         userService.updateUser(id, dto);
         return ResponseEntity.noContent().build();
     }

@@ -7,6 +7,7 @@ import com.personal.spring_security.entities.Role;
 import com.personal.spring_security.entities.Tweet;
 import com.personal.spring_security.repository.TweetRepository;
 import com.personal.spring_security.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -66,7 +67,7 @@ public class TweetController {
     }
 
     @PostMapping("/tweets")
-    public ResponseEntity<Void> createTweet(@RequestBody CreateTweetDto dto,
+    public ResponseEntity<Void> createTweet(@RequestBody @Valid CreateTweetDto dto,
                                             JwtAuthenticationToken token) {
 
         var user = userRepository.findById(UUID.fromString(token.getName()))

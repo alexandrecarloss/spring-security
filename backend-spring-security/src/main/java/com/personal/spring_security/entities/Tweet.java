@@ -9,12 +9,13 @@ import java.time.Instant;
 @Table(name = "tb_tweets")
 public class Tweet {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tweet_id")
     private Long tweetId;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @Column(columnDefinition = "TEXT")
     private String content;
     @CreationTimestamp
     private Instant creationTimeStamp;

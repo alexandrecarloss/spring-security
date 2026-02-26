@@ -76,13 +76,20 @@ export function Feed() {
 
   const handleTweet = async () => {
     if (!content.trim()) return;
+    if (content.length > 65000) {
+      showToast("Texto muito longo! Máximo de 65000 caracteres.", "error");
+      return;
+    }
     try {
       await createTweet(content);
       setContent("");
       showToast("Tweet publicado com sucesso");
       await loadFeed();
-    } catch {
-      showToast("Erro ao publicar tweet", "error");
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const errorMessage =
+        error.response?.data?.message || "Erro ao publicar tweet";
+      showToast(errorMessage, "error");
     }
   };
 
@@ -121,7 +128,7 @@ export function Feed() {
       <h1 style={{ color: "var(--secondary-color)" }}>Seu Feed</h1>
 
       <div style={{ margin: "20px 0", display: "flex", gap: "10px" }}>
-        <input
+        <textarea
           style={{
             flex: 1,
             padding: "12px",
@@ -132,9 +139,10 @@ export function Feed() {
             color: "var(--text-color)",
           }}
           value={content}
+          maxLength={65000}
           onChange={(e) => setContent(e.target.value)}
           placeholder="O que está pensando?"
-        />
+        ></textarea>
         <button
           onClick={handleTweet}
           style={{
@@ -191,7 +199,16 @@ export function Feed() {
                 @{t.fullName}
               </strong>
 
-              <p style={{ fontSize: "18px", margin: "0 0 15px 0" }}>
+              <p
+                style={{
+                  fontSize: "18px",
+                  margin: "0 0 15px 0",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word"
+                //   overflowWrap: "anywhere",
+                }}
+              >
                 {t.content}
               </p>
 
