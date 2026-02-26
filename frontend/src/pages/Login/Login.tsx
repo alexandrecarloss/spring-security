@@ -1,7 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import "./Login.css";
 import { loginRequest, registerRequest } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../context/ToastContext";
 
 type CSSVars = React.CSSProperties & {
   "--i"?: number;
@@ -12,7 +13,6 @@ import { Envelope, Lock, Eye, User, CheckShield } from "@boxicons/react";
 import type { AxiosError } from "axios";
 
 export function Login() {
-  // Estados para controlar as classes de animação do wrapper
   const [isActive, setIsActive] = useState(false); // Troca entre Login e Register
   const [showForgot, setShowForgot] = useState(false); // Mostra esqueci a senha
   const [showSuccess, setShowSuccess] = useState(false); // Mostra mensagem de sucesso
@@ -21,23 +21,12 @@ export function Login() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
+  const { showToast } = useToast();
 
   // Função para iniciar o Login com Google (Integração com seu Backend)
   const handleGoogleLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";
   };
-
-  const showToast = useCallback(
-    (message: string, type: "success" | "error" = "success") => {
-      setToast({ message, type });
-      setTimeout(() => setToast(null), 3000);
-    },
-    [],
-  );
 
   const navigate = useNavigate();
 
@@ -94,7 +83,6 @@ export function Login() {
           className="social-media animation"
           style={{ "--i": 0.5, "--j": 21.5 } as CSSVars}
         >
-          {/* Botão Customizado para manter seu layout, mas chamando seu backend */}
           <button onClick={handleGoogleLogin} className="google-btn-custom">
             <i className="bx bxl-google"></i> Entrar com Google
           </button>
@@ -216,7 +204,11 @@ export function Login() {
             className="input-box animation"
             style={{ "--i": 19, "--j": 2 } as CSSVars}
           >
-            <input type="email" required placeholder=" " />
+            <input type="email" 
+            required 
+            placeholder=" "
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} />
             <label>E-mail</label>
             <Envelope />
           </div>
@@ -228,6 +220,8 @@ export function Login() {
               type={showPassword ? "text" : "password"}
               required
               placeholder=" "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <label>Password</label>
             {showPassword ? (
@@ -332,26 +326,6 @@ export function Login() {
           Back to Login
         </button>
       </div>
-      {toast && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 20,
-            right: 20,
-            background:
-              toast.type === "success"
-                ? "var(--secondary-color)"
-                : "var(--alert-color)",
-            color: "var(--main-color)",
-            padding: "12px 20px",
-            borderRadius: 6,
-            fontWeight: "bold",
-            zIndex: 10000,
-          }}
-        >
-          {toast.message}
-        </div>
-      )}
     </div>
   );
 }

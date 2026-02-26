@@ -4,6 +4,7 @@ import { getUserData, isAdmin } from "../auth/getUserData";
 import { AxiosError } from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { useToast } from "../context/ToastContext";
 
 type Tweet = {
   tweetId: number;
@@ -17,20 +18,9 @@ export function Feed() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [tweetToDelete, setTweetToDelete] = useState<number | null>(null);
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
+  const { showToast } = useToast();
 
   const user = getUserData();
-
-  const showToast = useCallback(
-    (message: string, type: "success" | "error" = "success") => {
-      setToast({ message, type });
-      setTimeout(() => setToast(null), 3000);
-    },
-    [],
-  );
 
   const loadFeed = useCallback(async () => {
     try {
@@ -289,27 +279,6 @@ export function Feed() {
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {toast && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 20,
-            right: 20,
-            background:
-              toast.type === "success"
-                ? "var(--secondary-color)"
-                : "var(--alert-color)",
-            color: "var(--main-color)",
-            padding: "12px 20px",
-            borderRadius: 6,
-            fontWeight: "bold",
-            zIndex: 10000,
-          }}
-        >
-          {toast.message}
         </div>
       )}
     </div>
