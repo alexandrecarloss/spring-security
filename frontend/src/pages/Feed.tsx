@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { createTweet, deleteTweet, getFeed } from "../services/tweetService";
 import { getUserData, isAdmin } from "../auth/getUserData";
 import { AxiosError } from "axios";
@@ -13,12 +13,59 @@ type Tweet = {
   userId: string;
 };
 
+function ExpandableText({
+  text,
+  limit = 400,
+}: {
+  text: string;
+  limit?: number;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (text.length <= limit) {
+    return <>{text}</>;
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          maxHeight: isExpanded ? "500px" : "150px",
+          overflowY: isExpanded ? "auto" : "hidden",
+          transition: "max-height 0.3s ease",
+          paddingRight: "5px",
+        }}
+      >
+        {isExpanded ? text : `${text.substring(0, limit)}...`}
+      </div>
+
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        style={{
+          alignSelf: "flex-start",
+          background: "none",
+          border: "none",
+          color: "var(--secondary-color)",
+          cursor: "pointer",
+          fontWeight: "bold",
+          padding: "5px 0",
+          fontSize: "14px",
+          textDecoration: "underline",
+        }}
+      >
+        {isExpanded ? "Ver menos" : "Ler mais"}
+      </button>
+    </div>
+  );
+}
+
 export function Feed() {
   const [tweets, setTweets] = useState<Tweet[]>([]);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [tweetToDelete, setTweetToDelete] = useState<number | null>(null);
   const { showToast } = useToast();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const user = getUserData();
 
@@ -84,6 +131,9 @@ export function Feed() {
       await createTweet(content);
       setContent("");
       showToast("Tweet publicado com sucesso");
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "60px";
+      }
       await loadFeed();
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
@@ -127,36 +177,65 @@ export function Feed() {
     >
       <h1 style={{ color: "var(--secondary-color)" }}>Seu Feed</h1>
 
-      <div style={{ margin: "20px 0", display: "flex", gap: "10px" }}>
+      {/* ÁREA DE POSTAGEM */}
+      <div
+        style={{
+          marginBottom: "30px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
         <textarea
           style={{
-            flex: 1,
+            width: "100%",
             padding: "12px",
             borderRadius: "4px",
             border: "2px solid var(--secondary-color)",
             fontSize: "16px",
             background: "var(--main-color)",
             color: "var(--text-color)",
+            resize: "none",
+            overflow: "hidden",
+            minHeight: "60px",
+            boxSizing: "border-box",
           }}
+          ref={textareaRef}
           value={content}
           maxLength={65000}
-          onChange={(e) => setContent(e.target.value)}
           placeholder="O que está pensando?"
-        ></textarea>
-        <button
-          onClick={handleTweet}
+          onChange={(e) => {
+            setContent(e.target.value);
+            e.target.style.height = "inherit";
+            e.target.style.height = `${e.target.scrollHeight}px`;
+          }}
+        />
+
+        <div
           style={{
-            padding: "10px 20px",
-            background: "var(--secondary-color)",
-            color: "var(--main-color)",
-            fontWeight: "bold",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          Postar
-        </button>
+          <button
+            onClick={handleTweet}
+            style={{
+              padding: "10px 20px",
+              background: "var(--secondary-color)",
+              color: "var(--main-color)",
+              fontWeight: "bold",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Postar
+          </button>
+          <span style={{ fontSize: "12px", opacity: 0.7 }}>
+            {content.length.toLocaleString()} / 65.000
+          </span>
+        </div>
       </div>
 
       <button
@@ -175,7 +254,7 @@ export function Feed() {
       >
         Sair
       </button>
-
+      {/* LISTAGEM DE TWEETS */}
       <div style={{ marginTop: "20px" }}>
         {tweets.length > 0 ? (
           tweets.map((t) => (
@@ -199,18 +278,16 @@ export function Feed() {
                 @{t.fullName}
               </strong>
 
-              <p
+              <div
                 style={{
                   fontSize: "18px",
                   margin: "0 0 15px 0",
                   whiteSpace: "pre-wrap",
                   wordBreak: "break-word",
-                  overflowWrap: "break-word"
-                //   overflowWrap: "anywhere",
                 }}
               >
-                {t.content}
-              </p>
+                <ExpandableText text={t.content} limit={400} />
+              </div>
 
               {(isAdmin() || user?.sub === t.userId) && (
                 <button
@@ -235,6 +312,7 @@ export function Feed() {
         )}
       </div>
 
+      {/* MODAL DE EXCLUSÃO */}
       {tweetToDelete && (
         <div
           style={{
