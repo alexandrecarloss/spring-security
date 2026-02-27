@@ -1,0 +1,81 @@
+/* Configurações Padrão (Tema Dark - Seu original) */
+:root {
+    --main-color: #081b29;
+    --secondary-color: #0FFCBE;
+    --tertiary-color: #ffffff;
+    --text-color: #ffffff;
+    --alert-color: #ff4d4d;
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+}
+
+/* Configurações para Tema Light */
+[data-theme="light"] {
+    --main-color: #F2F0EA;      /* Fundo claro (creme) */
+    --secondary-color: #081b29;  /* Elementos em contraste (azul escuro) */
+    --tertiary-color: #081b29;
+    --text-color: #081b29;       /* Texto escuro para leitura */
+    --alert-color: #d32f2f;
+    --bg-overlay: rgba(255, 255, 255, 0.7);
+}
+
+/* Variantes de Cores de Destaque */
+/* Basta adicionar estas classes ao body para testar as cores que você listou */
+
+.theme-blue { --secondary-color: #0ef; }
+.theme-orange { --secondary-color: #FF921C; }
+.theme-fuchsia { --secondary-color: #D8125B; }
+.theme-mint { --secondary-color: #0FFCBE; }
+.theme-yellow { --secondary-color: #BAFF39; }
+.theme-marine { --secondary-color: #01257D; }
+
+/* RESET E BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--main-color);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Cores alternativas */
+  /* azul claro */
+  /* --secondary-color: #0ef;  */
+  /* cor creme */
+  /* --secondary-color: #F2F0EA; */
+  /* cor laranja */
+  /* --secondary-color: #FF921C; */
+  /* cor amarela */
+  /* --secondary-color: #ECA427; */
+  /* cor fúcsia */
+  /* --secondary-color: #D8125B; */
+  /* cor cinza */
+  /* --secondary-color: #2C2E39; */
+  /* cor verde */
+  /* --secondary-color: #205A28; */
+  /* cor vermelho */
+  /* --secondary-color: #C72B32; */
+  /* cor roza escuro */
+  /* --secondary-color: #970747; */
+  /* cor azul */
+  /* --secondary-color: #106EBE; */
+  /* cor menta */
+  /* --secondary-color: #0FFCBE; */
+  /* cor tangerina */
+  /* --secondary-color: #FFCC00; */
+  /* cor marfin */
+  /* --secondary-color: #FAF5E9; */
+  /* cor verde malaquita */
+  /* --secondary-color: #31EC56; */
+  /* cor razzmatazz  */
+  /* --secondary-color: #EF036C; */
+  /* cor heliotrópio   */
+  /* --secondary-color: #EE72F8; */
+  /* cor amarelo esverdeado */
+  /* --secondary-color: #BAFF39; */
+  /* cor azul marinho */
+  /* --secondary-color: #01257D; */

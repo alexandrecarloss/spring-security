@@ -4,6 +4,7 @@ import { LoginSuccess } from "./pages/Login/LoginSuccess";
 import { Feed } from "./pages/Feed";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { ToastProvider } from "./context/ToastProvider.tsx";
+import './styles/variables.css';
 
 function App() {
   return (

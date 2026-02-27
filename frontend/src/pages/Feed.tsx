@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useToast } from "../context/ToastContext";
+import "./Feed.css";
 
 type Tweet = {
   tweetId: number;
@@ -27,31 +28,14 @@ function ExpandableText({
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div
-        style={{
-          maxHeight: isExpanded ? "500px" : "150px",
-          overflowY: isExpanded ? "auto" : "hidden",
-          transition: "max-height 0.3s ease",
-          paddingRight: "5px",
-        }}
-      >
+    <div className="expandable-container">
+      <div className={`expandable-content ${isExpanded ? "expanded" : "collapsed"}`}>
         {isExpanded ? text : `${text.substring(0, limit)}...`}
       </div>
 
       <button
+        className="expand-button"
         onClick={() => setIsExpanded(!isExpanded)}
-        style={{
-          alignSelf: "flex-start",
-          background: "none",
-          border: "none",
-          color: "var(--secondary-color)",
-          cursor: "pointer",
-          fontWeight: "bold",
-          padding: "5px 0",
-          fontSize: "14px",
-          textDecoration: "underline",
-        }}
       >
         {isExpanded ? "Ver menos" : "Ler mais"}
       </button>
@@ -178,28 +162,9 @@ export function Feed() {
       <h1 style={{ color: "var(--secondary-color)" }}>Seu Feed</h1>
 
       {/* ÁREA DE POSTAGEM */}
-      <div
-        style={{
-          marginBottom: "30px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
+      <div className="post-area">
         <textarea
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: "4px",
-            border: "2px solid var(--secondary-color)",
-            fontSize: "16px",
-            background: "var(--main-color)",
-            color: "var(--text-color)",
-            resize: "none",
-            overflow: "hidden",
-            minHeight: "60px",
-            boxSizing: "border-box",
-          }}
+          className="post-textarea"
           ref={textareaRef}
           value={content}
           maxLength={65000}
@@ -211,125 +176,42 @@ export function Feed() {
           }}
         />
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "13px",
-              opacity: content.length > 60000 ? 1 : 0.6,
-              color: content.length > 60000 ? "var(--alert-color)" : "inherit",
-              fontWeight: content.length > 60000 ? "bold" : "normal",
-            }}
-          >
+        <div className="post-controls">
+          <span className={`char-counter ${content.length > 60000 ? "limit-near" : ""}`}>
             {content.length.toLocaleString()} / 65.000
           </span>
 
-          <button
-            onClick={handleTweet}
-            className="post-button"
-            onMouseOver={(e) =>
-              (e.currentTarget.style.filter = "brightness(1.1)")
-            }
-            onMouseOut={(e) => (e.currentTarget.style.filter = "brightness(1)")}
-            onMouseDown={(e) =>
-              (e.currentTarget.style.transform = "scale(0.98)")
-            }
-            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
+          <button onClick={handleTweet} className="post-button">
             Postar
           </button>
         </div>
       </div>
 
       <button
+        className="logout-button"
         onClick={() => {
           localStorage.clear();
           window.location.href = "/login";
         }}
-        style={{
-          position: "absolute",
-          top: "40px",
-          right: "40px",
-          color: "var(--text-color)",
-          background: "transparent",
-          border: "1px solid rgba(255,255,255,0.2)",
-          padding: "8px 16px",
-          borderRadius: "6px",
-          cursor: "pointer",
-          fontSize: "14px",
-          transition: "background 0.2s",
-        }}
-        onMouseOver={(e) =>
-          (e.currentTarget.style.background = "rgba(255,255,255,0.05)")
-        }
-        onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
       >
         Sair da conta
       </button>
+      
       {/* LISTAGEM DE TWEETS */}
-      <div style={{ marginTop: "20px" }}>
+      <div className="tweets-list">
         {tweets.length > 0 ? (
           tweets.map((t) => (
-            <div
-              key={t.tweetId}
-              style={{
-                background: "var(--main-color)",
-                padding: "20px",
-                borderRadius: "8px",
-                marginBottom: "15px",
-                border: `1px solid var(--secondary-color)`,
-              }}
-            >
-              <strong
-                style={{
-                  color: "var(--secondary-color)",
-                  display: "block",
-                  marginBottom: "8px",
-                }}
-              >
-                @{t.fullName}
-              </strong>
+            <div key={t.tweetId} className="tweet-card">
+              <strong className="tweet-author">@{t.fullName}</strong>
 
-              <div
-                style={{
-                  fontSize: "18px",
-                  margin: "0 0 15px 0",
-                  whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
-                }}
-              >
+              <div className="tweet-content">
                 <ExpandableText text={t.content} limit={400} />
               </div>
 
               {(isAdmin() || user?.sub === t.userId) && (
                 <button
                   onClick={() => setTweetToDelete(t.tweetId)}
-                  style={{
-                    color: "var(--alert-color)",
-                    background: "rgba(255, 0, 0, 0.05)",
-                    border: "1px solid transparent",
-                    cursor: "pointer",
-                    padding: "6px 12px",
-                    borderRadius: "4px",
-                    fontSize: "13px",
-                    fontWeight: "500",
-                    transition: "all 0.2s",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.border =
-                      "1px solid var(--alert-color)";
-                    e.currentTarget.style.background = "rgba(255, 0, 0, 0.1)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.border = "1px solid transparent";
-                    e.currentTarget.style.background = "rgba(255, 0, 0, 0.05)";
-                  }}
+                  className="delete-tweet-button"
                 >
                   Excluir
                 </button>
@@ -343,65 +225,14 @@ export function Feed() {
 
       {/* MODAL DE EXCLUSÃO */}
       {tweetToDelete && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            background: "var(--main-color)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 9999,
-          }}
-        >
-          <div
-            style={{
-              background: "var(--main-color)",
-              padding: "30px",
-              borderRadius: "8px",
-              textAlign: "center",
-              border: `2px solid var(--secondary-color)`,
-            }}
-          >
+        <div className="modal-overlay">
+          <div className="modal-content">
             <p>Deseja excluir este tweet?</p>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                marginTop: 20,
-                justifyContent: "center",
-              }}
-            >
-              <button
-                onClick={confirmDelete}
-                style={{
-                  background: "var(--alert-color)",
-                  border: "none",
-                  padding: "12px 24px",
-                  color: "white",
-                  cursor: "pointer",
-                  borderRadius: "6px",
-                  fontWeight: "bold",
-                  boxShadow: "0 4px 14px rgba(255,0,0,0.2)",
-                }}
-              >
+            <div className="modal-actions">
+              <button onClick={confirmDelete} className="btn-confirm">
                 Confirmar Exclusão
               </button>
-
-              <button
-                onClick={() => setTweetToDelete(null)}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  padding: "12px 24px",
-                  color: "var(--text-color)",
-                  cursor: "pointer",
-                  opacity: 0.7,
-                }}
-              >
+              <button onClick={() => setTweetToDelete(null)} className="btn-cancel">
                 Voltar
               </button>
             </div>

@@ -1,0 +1,235 @@
+
+.post-button {
+  padding: 10px 24px;
+  background: var(--secondary-color);
+  color: var(--main-color);
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.1s;
+}
+
+.feed-container {
+    padding: 40px;
+    color: var(--text-color);
+    min-height: 100vh;
+    width: 100vw;
+    background: var(--main-color);
+    box-sizing: border-box;
+    position: relative;
+}
+
+.feed-title {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.post-area {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 2px solid var(--secondary-color);
+    font-size: 16px;
+    background: var(--main-color);
+    color: var(--text-color);
+    resize: none;
+    overflow: hidden;
+    min-height: 60px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.post-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.char-counter {
+    font-size: 13px;
+    transition: color 0.3s;
+}
+
+.char-counter.limit-near {
+    color: var(--alert-color);
+    font-weight: bold;
+    opacity: 1;
+}
+
+.post-button {
+    padding: 10px 24px;
+    background: var(--secondary-color);
+    color: var(--main-color);
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.post-button:hover {
+    filter: brightness(1.1);
+}
+
+.post-button:active {
+    transform: scale(0.98);
+}
+
+.logout-button {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.logout-button:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tweets-list {
+    margin-top: 20px;
+}
+
+.tweet-card {
+    background: var(--main-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid var(--secondary-color);
+}
+
+.tweet-author {
+    color: var(--secondary-color);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.tweet-content {
+    font-size: 18px;
+    margin: 0 0 15px 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.delete-tweet-button {
+    color: var(--alert-color);
+    background: rgba(255, 0, 0, 0.05);
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.delete-tweet-button:hover {
+    border: 1px solid var(--alert-color);
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); 
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: var(--main-color);
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid var(--secondary-color);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.btn-confirm {
+    background: var(--alert-color);
+    border: none;
+    padding: 12px 24px;
+    color: white;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    box-shadow: 0 4px 14px rgba(255, 0, 0, 0.2);
+}
+
+.btn-cancel {
+    background: transparent;
+    border: none;
+    padding: 12px 24px;
+    color: var(--text-color);
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.btn-cancel:hover {
+    opacity: 1;
+}
+
+.expandable-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.expandable-content {
+    overflow-y: hidden;
+    transition: max-height 0.3s ease;
+    padding-right: 5px;
+}
+
+.expandable-content.collapsed {
+    max-height: 150px;
+}
+
+.expandable-content.expanded {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.expand-button {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 0;
+    font-size: 14px;
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
+
+.expand-button:hover {
+    opacity: 0.8;
+}
