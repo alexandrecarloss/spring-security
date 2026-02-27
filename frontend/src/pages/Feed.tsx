@@ -214,27 +214,36 @@ export function Feed() {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             alignItems: "center",
+            gap: "15px",
           }}
         >
+          <span
+            style={{
+              fontSize: "13px",
+              opacity: content.length > 60000 ? 1 : 0.6,
+              color: content.length > 60000 ? "var(--alert-color)" : "inherit",
+              fontWeight: content.length > 60000 ? "bold" : "normal",
+            }}
+          >
+            {content.length.toLocaleString()} / 65.000
+          </span>
+
           <button
             onClick={handleTweet}
-            style={{
-              padding: "10px 20px",
-              background: "var(--secondary-color)",
-              color: "var(--main-color)",
-              fontWeight: "bold",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
+            className="post-button"
+            onMouseOver={(e) =>
+              (e.currentTarget.style.filter = "brightness(1.1)")
+            }
+            onMouseOut={(e) => (e.currentTarget.style.filter = "brightness(1)")}
+            onMouseDown={(e) =>
+              (e.currentTarget.style.transform = "scale(0.98)")
+            }
+            onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             Postar
           </button>
-          <span style={{ fontSize: "12px", opacity: 0.7 }}>
-            {content.length.toLocaleString()} / 65.000
-          </span>
         </div>
       </div>
 
@@ -244,15 +253,24 @@ export function Feed() {
           window.location.href = "/login";
         }}
         style={{
-          color: "var(--alert-color)",
-          background: "none",
-          border: `1px solid var(--alert-color)`,
-          padding: "5px 10px",
+          position: "absolute",
+          top: "40px",
+          right: "40px",
+          color: "var(--text-color)",
+          background: "transparent",
+          border: "1px solid rgba(255,255,255,0.2)",
+          padding: "8px 16px",
+          borderRadius: "6px",
           cursor: "pointer",
-          marginBottom: "20px",
+          fontSize: "14px",
+          transition: "background 0.2s",
         }}
+        onMouseOver={(e) =>
+          (e.currentTarget.style.background = "rgba(255,255,255,0.05)")
+        }
+        onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
       >
-        Sair
+        Sair da conta
       </button>
       {/* LISTAGEM DE TWEETS */}
       <div style={{ marginTop: "20px" }}>
@@ -294,15 +312,26 @@ export function Feed() {
                   onClick={() => setTweetToDelete(t.tweetId)}
                   style={{
                     color: "var(--alert-color)",
-                    background: "none",
-                    border: "none",
+                    background: "rgba(255, 0, 0, 0.05)",
+                    border: "1px solid transparent",
                     cursor: "pointer",
-                    padding: 0,
-                    fontSize: "14px",
-                    textDecoration: "underline",
+                    padding: "6px 12px",
+                    borderRadius: "4px",
+                    fontSize: "13px",
+                    fontWeight: "500",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.border =
+                      "1px solid var(--alert-color)";
+                    e.currentTarget.style.background = "rgba(255, 0, 0, 0.1)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.border = "1px solid transparent";
+                    e.currentTarget.style.background = "rgba(255, 0, 0, 0.05)";
                   }}
                 >
-                  Excluir Tweet
+                  Excluir
                 </button>
               )}
             </div>
@@ -351,26 +380,29 @@ export function Feed() {
                 style={{
                   background: "var(--alert-color)",
                   border: "none",
-                  padding: "10px 15px",
+                  padding: "12px 24px",
                   color: "white",
                   cursor: "pointer",
-                  borderRadius: "4px",
+                  borderRadius: "6px",
+                  fontWeight: "bold",
+                  boxShadow: "0 4px 14px rgba(255,0,0,0.2)",
                 }}
               >
-                Sim, excluir
+                Confirmar Exclusão
               </button>
+
               <button
                 onClick={() => setTweetToDelete(null)}
                 style={{
-                  background: "gray",
+                  background: "transparent",
                   border: "none",
-                  padding: "10px 15px",
-                  color: "white",
+                  padding: "12px 24px",
+                  color: "var(--text-color)",
                   cursor: "pointer",
-                  borderRadius: "4px",
+                  opacity: 0.7,
                 }}
               >
-                Cancelar
+                Voltar
               </button>
             </div>
           </div>
