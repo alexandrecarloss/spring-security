@@ -1,16 +1,22 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://192.168.0.103:8080",
 });
 
-// Interceptor para adicionar o Token em cada requisição automaticamente
-const publicRoutes = ["/login", "/users"];
+const publicRoutes = [
+  "/login", 
+  "/users", 
+  "/auth/forgot-password", 
+  "/auth/reset-password"
+];
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");
 
-  if (token && !publicRoutes.includes(config.url!)) {
+  const isPublicRoute = publicRoutes.some(route => config.url?.startsWith(route));
+
+  if (token && !isPublicRoute) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 

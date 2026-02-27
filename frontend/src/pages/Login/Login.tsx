@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Login.css";
-import { loginRequest, registerRequest } from "../../services/authService";
+import { loginRequest, registerRequest, forgotPasswordRequest } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../context/ToastContext";
 
@@ -22,6 +22,22 @@ export function Login() {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+
+  // NOVA FUNÇÃO: Dispara o e-mail de recuperação
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      await forgotPasswordRequest(email);
+      setShowSuccess(true);
+      setShowForgot(false);
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      showToast(error.response?.data?.message || "Erro ao solicitar recuperação", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Função para iniciar o Login com Google (Integração com seu Backend)
   const handleGoogleLogin = () => {
@@ -264,51 +280,35 @@ export function Login() {
         </p>
       </div>
 
-      {/* BOX FORGOT PASSWORD */}
+      {/* BOX FORGOT PASSWORD ATUALIZADO */}
       <div className="form-box forgot-password">
-        <h2 className="animation" style={{ "--i": 0, "--j": 21 } as CSSVars}>
-          Reset Password
-        </h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setShowSuccess(true);
-            setShowForgot(false);
-          }}
-        >
-          <p
-            className="animation reset-email-text"
-            style={{ "--i": 1, "--j": 22 } as CSSVars}
-          >
+        <h2 className="animation" style={{ "--i": 0, "--j": 21 } as CSSVars}>Reset Password</h2>
+        <form onSubmit={handleForgotPassword}>
+          <p className="animation reset-email-text" style={{ "--i": 1, "--j": 22 } as CSSVars}>
             Enter your email to receive a reset link.
           </p>
-          <div
-            className="input-box animation"
-            style={{ "--i": 2, "--j": 23 } as CSSVars}
-          >
-            <input type="email" 
-            required
-            placeholder=" "
-            maxLength={100} />
+          <div className="input-box animation" style={{ "--i": 2, "--j": 23 } as CSSVars}>
+            <input 
+              type="email" 
+              required
+              placeholder=" "
+              maxLength={100}
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <label>E-mail</label>
             <Envelope />
           </div>
           <button
             type="submit"
-            className="btn animation"
+            disabled={loading}
+            className={`btn animation ${loading ? "loading" : ""}`}
             style={{ "--i": 3, "--j": 24 } as CSSVars}
           >
-            Send Link
+            {loading ? "Sending..." : "Send Link"}
           </button>
-          <div
-            className="logreg-link animation"
-            style={{ "--i": 4, "--j": 25 } as CSSVars}
-          >
-            <p>
-              <a href="#" onClick={() => setShowForgot(false)}>
-                Back to Login
-              </a>
-            </p>
+          <div className="logreg-link animation" style={{ "--i": 4, "--j": 25 } as CSSVars}>
+            <p><a href="#" onClick={() => setShowForgot(false)}>Back to Login</a></p>
           </div>
         </form>
       </div>

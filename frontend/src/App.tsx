@@ -5,6 +5,7 @@ import { Feed } from "./pages/Feed";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { ToastProvider } from "./context/ToastProvider.tsx";
 import './styles/variables.css';
+import { ResetPassword } from "./pages/ResetPassword.tsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/login-success" element={<LoginSuccess />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
 
           <Route
