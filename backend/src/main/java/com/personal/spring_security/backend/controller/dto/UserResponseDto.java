@@ -1,0 +1,28 @@
+package com.personal.spring_security.backend.controller.dto;
+
+import com.personal.spring_security.backend.entities.Role;
+import com.personal.spring_security.backend.entities.User;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+public record UserResponseDto(
+        UUID Id,
+        String email,
+        String fullName,
+        String pictureUrl,
+        Set<String> roles
+) {
+
+    public static UserResponseDto fromEntity(User user) {
+        return new UserResponseDto(
+                user.getId(),
+                user.getEmail(),
+                user.getFullName(),
+                user.getPictureUrl(),
+                user.getRoles().stream().map(Role::getName).collect(Collectors.toSet())
+        );
+    }
+}

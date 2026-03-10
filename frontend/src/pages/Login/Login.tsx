@@ -1,6 +1,11 @@
 import { useState } from "react";
 import "./Login.css";
-import { loginRequest, registerRequest, forgotPasswordRequest } from "../../services/authService";
+import {
+  loginRequest,
+  registerRequest,
+  forgotPasswordRequest,
+  getGoogleAuthUrl,
+} from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../context/ToastContext";
 
@@ -22,9 +27,21 @@ export function Login() {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file)); // Gera preview local
+    }
+  };
 
   // NOVA FUNÇÃO: Dispara o e-mail de recuperação
-  const handleForgotPassword = async (e: React.FormEvent) => {
+  const handleForgotPassword = async (
+    e: React.SubmitEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -33,7 +50,10 @@ export function Login() {
       setShowForgot(false);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
-      showToast(error.response?.data?.message || "Erro ao solicitar recuperação", "error");
+      showToast(
+        error.response?.data?.message || "Erro ao solicitar recuperação",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
@@ -41,7 +61,7 @@ export function Login() {
 
   // Função para iniciar o Login com Google (Integração com seu Backend)
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = getGoogleAuthUrl();
   };
 
   const navigate = useNavigate();
@@ -66,11 +86,12 @@ export function Login() {
   const handleRegister = async () => {
     try {
       setLoading(true);
-
-      await registerRequest(fullName, email, password);
+      await registerRequest(fullName, email, password, selectedFile || undefined);
 
       showToast("Conta criada com sucesso!", "success");
       setIsActive(false);
+      setSelectedFile(null);
+      setPreviewUrl(null);
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       const msg = error.response?.data?.message || "Erro desconhecido";
@@ -204,6 +225,25 @@ export function Login() {
             handleRegister();
           }}
         >
+          <div className="avatar-upload-container animation" style={{ "--i": 17.7, "--j": 0.7 } as CSSVars}>
+            <label htmlFor="avatar-input" className="avatar-label">
+              <img 
+                src={previewUrl || "/default-avatar.png"} 
+                className="avatar-preview-round" 
+                alt="Preview" 
+              />
+              <div className="avatar-overlay">
+                <i className='bx bx-camera'></i>
+              </div>
+            </label>
+            <input 
+              id="avatar-input" 
+              type="file" 
+              accept="image/*" 
+              onChange={handleFileChange} 
+              style={{ display: 'none' }} 
+            />
+          </div>
           <div
             className="input-box animation"
             style={{ "--i": 18, "--j": 1 } as CSSVars}
@@ -223,12 +263,14 @@ export function Login() {
             className="input-box animation"
             style={{ "--i": 19, "--j": 2 } as CSSVars}
           >
-            <input type="email" 
-            required 
-            placeholder=" "
-            value={email}
-            maxLength={100}
-            onChange={(e) => setEmail(e.target.value)} />
+            <input
+              type="email"
+              required
+              placeholder=" "
+              value={email}
+              maxLength={100}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <label>E-mail</label>
             <Envelope />
           </div>
@@ -282,18 +324,26 @@ export function Login() {
 
       {/* BOX FORGOT PASSWORD ATUALIZADO */}
       <div className="form-box forgot-password">
-        <h2 className="animation" style={{ "--i": 0, "--j": 21 } as CSSVars}>Reset Password</h2>
+        <h2 className="animation" style={{ "--i": 0, "--j": 21 } as CSSVars}>
+          Reset Password
+        </h2>
         <form onSubmit={handleForgotPassword}>
-          <p className="animation reset-email-text" style={{ "--i": 1, "--j": 22 } as CSSVars}>
+          <p
+            className="animation reset-email-text"
+            style={{ "--i": 1, "--j": 22 } as CSSVars}
+          >
             Enter your email to receive a reset link.
           </p>
-          <div className="input-box animation" style={{ "--i": 2, "--j": 23 } as CSSVars}>
-            <input 
-              type="email" 
+          <div
+            className="input-box animation"
+            style={{ "--i": 2, "--j": 23 } as CSSVars}
+          >
+            <input
+              type="email"
               required
               placeholder=" "
               maxLength={100}
-              value={email} 
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <label>E-mail</label>
@@ -307,8 +357,15 @@ export function Login() {
           >
             {loading ? "Sending..." : "Send Link"}
           </button>
-          <div className="logreg-link animation" style={{ "--i": 4, "--j": 25 } as CSSVars}>
-            <p><a href="#" onClick={() => setShowForgot(false)}>Back to Login</a></p>
+          <div
+            className="logreg-link animation"
+            style={{ "--i": 4, "--j": 25 } as CSSVars}
+          >
+            <p>
+              <a href="#" onClick={() => setShowForgot(false)}>
+                Back to Login
+              </a>
+            </p>
           </div>
         </form>
       </div>

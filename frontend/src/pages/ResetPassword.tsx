@@ -4,7 +4,6 @@ import { useToast } from "../context/ToastContext";
 import { resetPasswordRequest } from "../services/authService";
 import { Lock, Eye } from "@boxicons/react";
 import type { AxiosError } from "axios";
-import "./ResetPassword.css";
 
 type CSSVars = React.CSSProperties & {
   "--i"?: number;
@@ -24,7 +23,7 @@ export function ResetPassword() {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!token) {

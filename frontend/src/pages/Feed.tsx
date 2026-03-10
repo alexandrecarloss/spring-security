@@ -29,7 +29,11 @@ function ExpandableText({
 
   return (
     <div className="expandable-container">
-      <div className={`expandable-content ${isExpanded ? "expanded" : "collapsed"}`}>
+      <div
+        className={`expandable-content ${
+          isExpanded ? "expanded" : "collapsed"
+        }`}
+      >
         {isExpanded ? text : `${text.substring(0, limit)}...`}
       </div>
 
@@ -177,26 +181,12 @@ export function Feed() {
         />
 
         <div className="post-controls">
-          <span className={`char-counter ${content.length > 60000 ? "limit-near" : ""}`}>
-            {content.length.toLocaleString()} / 65.000
-          </span>
-
           <button onClick={handleTweet} className="post-button">
             Postar
           </button>
         </div>
       </div>
 
-      <button
-        className="logout-button"
-        onClick={() => {
-          localStorage.clear();
-          window.location.href = "/login";
-        }}
-      >
-        Sair da conta
-      </button>
-      
       {/* LISTAGEM DE TWEETS */}
       <div className="tweets-list">
         {tweets.length > 0 ? (
@@ -232,7 +222,10 @@ export function Feed() {
               <button onClick={confirmDelete} className="btn-confirm">
                 Confirmar Exclusão
               </button>
-              <button onClick={() => setTweetToDelete(null)} className="btn-cancel">
+              <button
+                onClick={() => setTweetToDelete(null)}
+                className="btn-cancel"
+              >
                 Voltar
               </button>
             </div>

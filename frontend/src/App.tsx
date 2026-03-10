@@ -6,6 +6,8 @@ import { AuthLayout } from "./layouts/AuthLayout";
 import { ToastProvider } from "./context/ToastProvider.tsx";
 import './styles/variables.css';
 import { ResetPassword } from "./pages/ResetPassword.tsx";
+import { MainLayout } from "./layouts/MainLayout.tsx";
+import { EditProfile } from "./pages/EditProfile.tsx";
 
 function App() {
   return (
@@ -18,12 +20,10 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
 
-          <Route
-              path="/feed"
-              element={
-                  <Feed />
-              }
-            />
+          <Route element={<MainLayout />}>
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
+          </Route>
 
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

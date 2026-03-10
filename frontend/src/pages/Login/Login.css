@@ -3,7 +3,7 @@
     position: relative;
     width: 90%;
     max-width: 750px;
-    height: 500px;
+    height: 600px;
     background: transparent;
     border: 2px solid var(--secondary-color);
     box-shadow: 0 0 25px var(--secondary-color);
@@ -75,7 +75,7 @@
     position: relative;
     width: 100%;
     height: 50px;
-    margin: 15px 0;
+    margin: 20px 0;
 }
 
 .input-box input {
@@ -349,7 +349,7 @@
 .social-media {
     display: flex;
     justify-content: center;
-    margin: 15px 0; 
+    margin: 5px 0; 
     min-height: 45px;
 }
 
@@ -555,4 +555,113 @@
   30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
   40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
   100% { transform: scale(1); }
+}
+
+.avatar-upload-container {
+  display: flex;
+  justify-content: center;
+  /* margin-bottom: 20px; */
+}
+
+.avatar-label {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.avatar-preview-round {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--secondary-color);
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.3s;
+  color: white;
+  font-size: 24px;
+}
+
+.avatar-label:hover .avatar-overlay {
+  opacity: 1;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.reset-email-text {
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* Centraliza o wrapper na página de edição caso esteja dentro do MainLayout */
+.edit-profile-page {
+    margin: 2rem auto; /* Espaçamento para não colar na Navbar */
+}
+
+/* Garante que o cabeçalho com botão de voltar fique alinhado */
+.flex-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.back-btn-custom {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    transition: 0.3s;
+}
+
+.back-btn-custom:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+/* Ajuste para inputs desabilitados não ficarem feios */
+.input-box input:disabled {
+    border-bottom-style: dashed;
+    cursor: not-allowed;
+}
+
+/* Mobile: Garante que a caixa de edição apareça no topo */
+@media (max-width: 768px) {
+    .wrapper.active.edit-profile-page .form-box.register {
+        display: flex;
+        transform: none;
+        opacity: 1;
+        filter: none;
+    }
 }
