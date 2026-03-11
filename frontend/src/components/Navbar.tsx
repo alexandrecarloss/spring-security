@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { userService } from "../services/userService";
 
@@ -6,21 +6,42 @@ export function Navbar() {
   const user = userService.getUserData();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
   };
 
+  const navLinks = [
+    { name: 'Feed', path: '/feed' },
+    { name: 'Explorar', path: '/feed' }
+  ];
+
   return (
-    <nav className="sticky top-4 z-[100] flex items-center justify-between border mx-auto w-[95%] max-w-7xl border-slate-700 px-8 py-4 rounded-full text-white text-sm bg-black/60 backdrop-blur-xl shadow-2xl">
-      
+    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 flex items-center justify-between px-6 md:px-16 mx-auto 
+      ${isScrolled 
+        ? "py-3 bg-black/70 backdrop-blur-lg border-b border-white/10 shadow-2xl" 
+        : "py-6 bg-transparent"}`}>
       <div className="flex items-center gap-10">
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/feed" className="relative overflow-hidden h-6 group">
-            <span className="block group-hover:-translate-y-full transition-transform duration-300">Feed</span>
-            <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300 text-blue-400">Feed</span>
-          </Link>
+          {navLinks.map((link, i) => (
+            <Link 
+            key={i} 
+            to={link.path}
+            className="relative overflow-hidden h-6 group">
+              <span className="block group-hover:-translate-y-full transition-transform duration-300">{link.name}</span>
+              <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300 text-blue-400">{link.name}</span>
+            </Link>
+          ))}
         </div>
       </div>
 
@@ -57,13 +78,17 @@ export function Navbar() {
       </div>
 
       {/* Menu Mobile */}
-      {isMenuOpen && (
-        <div className="absolute top-[calc(100%+10px)] left-0 right-0 bg-black/95 border border-slate-800 p-6 rounded-[2rem] md:hidden flex flex-col gap-4 animate-in slide-in-from-top-2 duration-300">
-          <Link to="/profile/edit" onClick={() => setIsMenuOpen(false)} className="p-3 hover:bg-white/5 rounded-xl">Editar Perfil</Link>
-          <Link to="/feed" onClick={() => setIsMenuOpen(false)} className="p-3 hover:bg-white/5 rounded-xl">Feed</Link>
-          <button onClick={handleLogout} className="mt-4 bg-white text-black w-full py-3 rounded-full font-bold text-center">Sair</button>
-        </div>
-      )}
+      <div className={`fixed inset-0 h-screen bg-black transition-all duration-500 flex flex-col items-center justify-center gap-8 z-[-1] md:hidden
+        ${isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}>
+        
+        {navLinks.map((link, i) => (
+          <Link key={i} to={link.path} onClick={() => setIsMenuOpen(false)} className="text-2xl font-light text-white hover:text-blue-400">
+            {link.name}
+          </Link>
+        ))}
+        <Link to="/profile/edit" onClick={() => setIsMenuOpen(false)} className="text-2xl font-light text-white">Editar Perfil</Link>
+        <button onClick={handleLogout} className="mt-8 bg-white text-black px-12 py-4 rounded-full font-bold">Sair</button>
+      </div>
     </nav>
   );
 }

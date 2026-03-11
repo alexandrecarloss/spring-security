@@ -11,7 +11,7 @@ export function MainLayout() {
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
-      <main className="container mx-auto mt-4">
+      <main className="container mx-0 mt-14">
         <Outlet />
       </main>
     </div>

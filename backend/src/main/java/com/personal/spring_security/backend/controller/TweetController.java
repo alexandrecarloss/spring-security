@@ -45,7 +45,9 @@ public class TweetController {
                         tweet.getTweetId(),
                         tweet.getContent(),
                         tweet.getUser().getFullName(),
-                        tweet.getUser().getId()
+                        tweet.getUser().getId(),
+                        tweet.getUser().getPictureUrl(),
+                        tweet.getCreationTimeStamp()
                 ));
 
         return ResponseEntity.ok(new FeedDto(tweets.getContent(), page, pageSize, tweets.getTotalPages(), tweets.getTotalElements()));
@@ -60,7 +62,9 @@ public class TweetController {
                 tweet.getTweetId(),
                 tweet.getContent(),
                 tweet.getUser().getFullName(),
-                tweet.getUser().getId()
+                tweet.getUser().getId(),
+                tweet.getUser().getPictureUrl(),
+                tweet.getCreationTimeStamp()
         );
 
         return ResponseEntity.ok(feedItemDto);

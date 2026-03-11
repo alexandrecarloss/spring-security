@@ -42,6 +42,7 @@ public class AdminUserConfig implements CommandLineRunner {
                     log.info("Configuração Admin: Criando usuário administrador padrão...");
                     var user = new User();
                     user.setEmail("admin@gmail.com");
+                    user.setFullName("Administrador do Sistema");
                     user.setPassword(passwordEncoder.encode("123"));
                     user.setRoles(Set.of(roleAdmin));
                     userRepository.save(user);

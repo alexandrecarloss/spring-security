@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useToast } from "../context/ToastContext";
+import { userService } from "../services/userService";
 import "./Feed.css";
 
 type Tweet = {
@@ -12,6 +13,19 @@ type Tweet = {
   content: string;
   fullName: string;
   userId: string;
+  pictureUrl: string;
+  creationTimeStamp: string;
+};
+
+const formatDate = (isoString: string) => {
+  const date = new Date(isoString);
+  return date.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };
 
 function ExpandableText({
@@ -186,25 +200,44 @@ export function Feed() {
           </button>
         </div>
       </div>
-
       {/* LISTAGEM DE TWEETS */}
       <div className="tweets-list">
         {tweets.length > 0 ? (
           tweets.map((t) => (
             <div key={t.tweetId} className="tweet-card">
-              <strong className="tweet-author">@{t.fullName}</strong>
+              {/* Header do Tweet: Imagem e Informações do Autor */}
+              <div className="tweet-header">
+                <img 
+                  src={userService.getAvatarUrl(t.pictureUrl)} 
+                  alt={`Foto de ${t.fullName}`} 
+                  className="tweet-avatar"
+                />
+                
+                <div className="tweet-author-info">
+                  <div className="tweet-meta">
+                    <strong className="tweet-author-name">{t.fullName}</strong>
+                    <span className="tweet-dot">·</span>
+                    <span className="tweet-date">{formatDate(t.creationTimeStamp)}</span>
+                  </div>
+                  <span className="tweet-username">@{t.fullName.toLowerCase().replace(/\s/g, '')}</span>
+                </div>
+              </div>
 
-              <div className="tweet-content">
+              {/* Conteúdo do Tweet */}
+              <div className="tweet-body">
                 <ExpandableText text={t.content} limit={400} />
               </div>
 
+              {/* Ações */}
               {(isAdmin() || user?.sub === t.userId) && (
-                <button
-                  onClick={() => setTweetToDelete(t.tweetId)}
-                  className="delete-tweet-button"
-                >
-                  Excluir
-                </button>
+                <div className="tweet-actions">
+                  <button
+                    onClick={() => setTweetToDelete(t.tweetId)}
+                    className="delete-tweet-button"
+                  >
+                    Excluir
+                  </button>
+                </div>
               )}
             </div>
           ))

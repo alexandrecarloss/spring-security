@@ -39,9 +39,13 @@ public class JwtService {
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
                 .claim("scope", scopes)
-                .claim("email", user.getEmail())
-                .claim("fullName", user.getFullName());
+                .claim("email", user.getEmail());
 
+        if (user.getFullName() != null) {
+            builder.claim("fullName", user.getFullName());
+        } else {
+            builder.claim("fullName", "Usuário");
+        }
         if (user.getPictureUrl() != null) {
             builder.claim("picture", user.getPictureUrl());
         }

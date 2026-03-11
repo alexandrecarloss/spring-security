@@ -233,3 +233,70 @@
 .expand-button:hover {
     opacity: 0.8;
 }
+
+.tweet-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tweet-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.tweet-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-color);
+}
+
+.tweet-author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tweet-author-name {
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.tweet-dot {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.tweet-date {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.tweet-username {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    opacity: 0.8;
+}
+
+.tweet-body {
+    padding-left: 60px; 
+    margin-top: -10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.tweet-actions {
+    display: flex;
+    justify-content: flex-end;
+}
