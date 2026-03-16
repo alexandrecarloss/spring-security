@@ -37,7 +37,7 @@ A arquitetura é totalmente Stateless, utilizando tokens JWT assinados com chave
 
 ### Cadastro
 <div align="center">
-  <img src="assets/signnup.png" alt="Tela cadastro" style="align: center; width: 800px; display: block; margin: 0 auto;">
+  <img src="assets/signup.png" alt="Tela cadastro" style="align: center; width: 800px; display: block; margin: 0 auto;">
 </div>
 
 ### Redefinir senha
