@@ -23,27 +23,13 @@ A arquitetura é totalmente Stateless, utilizando tokens JWT assinados com chave
 > :construction: Projeto em construção :construction:
 <p align="center"><img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/></p>
 
-## Demo
+## 📱 Interface do Usuário
 
-### Tela Feed
-<div align="center">
-  <img src="assets/feed.png" alt="Tela feed" style="align: center; width: 800px; display: block; margin: 0 auto;">
-</div>
-
-### Login
-<div align="center">
-  <img src="assets/login.png" alt="Tela login" style="align: center; width: 800px; display: block; margin: 0 auto;">
-</div>
-
-### Cadastro
-<div align="center">
-  <img src="assets/signup.png" alt="Tela cadastro" style="align: center; width: 800px; display: block; margin: 0 auto;">
-</div>
-
-### Redefinir senha
-<div align="center">
-  <img src="assets/resetPassword.png" alt="Tela redefinir senha" style="align: center; width: 800px; display: block; margin: 0 auto;">
-</div>
+| Feed Principal | Fluxo de Autenticação |
+|---|---|
+| <img src="assets/feed.png" width="400"> | <img src="assets/login.png" width="400"> |
+| **Recuperação de Senha** | **Gestão de Perfil** |
+| <img src="assets/resetPassword.png" width="400"> | <img src="assets/signup.png" width="400"> |
 
 ## 🚀 Funcionalidades Implementadas
 **Login Híbrido**: Integração completa com Google OAuth2 e autenticação local com BCrypt. 
@@ -96,8 +82,9 @@ CORS: Configurado para permitir integrações seguras com frontends modernos (Re
 | POST   | /tweets                              | Criação de novo tweet                       | Autenticado       |
 | DELETE | /tweets/{id}                         | Excruir tweet                               | Autenticado/Admin |
 
+## 🧩 Como testar o projeto
 
-## ⚙️ Configuração do Ambiente
+### ⚙️ Configuração do Ambiente
 Para manter a segurança, o projeto utiliza Variáveis de Ambiente.
 
 1. Crie um ficheiro .env na raiz do projeto:
@@ -109,7 +96,56 @@ DB_PASSWORD=sua_senha
 ```
 
 2. Certifique-se de ter as chaves ```bash app.pub``` e ```bash app.key``` na pasta ```bashsrc/main/resources```.
+ 
+3. Clone o repositorio
+```bash
+git clone https://github.com/alexandrecarloss/spring-security.git
+```
+```bash
+cd spring-security
+```
+
+4. Iniciar o banco
+Em: `spring-security\backend\docker`
+```bash
+docker-compose up
+```
+
+5. Rodar Backend com intelliJ
+
+A API estará disponível em: `http://localhost:8080`
+
+### 4. Frontend
+
+Abra em um terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend: `http://localhost:5173/`
+
+## 📖 Documentação de API (Swagger)
+
+A documentação estará disponível via Swagger UI depois de iniciar o backend: 
+
+🔗 http://localhost:8080/swagger-ui/index.html
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
+## 👤 Author
+
+[@Carlos Alexandre](https://github.com/alexandrecarloss)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📞 Support
+
+For support, open an issue on GitHub.
