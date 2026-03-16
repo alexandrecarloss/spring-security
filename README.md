@@ -16,19 +16,23 @@ A arquitetura é totalmente Stateless, utilizando tokens JWT assinados com chave
 <p align="center"><img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/></p>
 
 ## 🚀 Funcionalidades Implementadas
-Login Híbrido: Integração completa com Google OAuth2 e autenticação local com BCrypt.
+**Login Híbrido**: Integração completa com Google OAuth2 e autenticação local com BCrypt. 
 
-Auto-Provisionamento: Criação automática de perfil de utilizador e vinculação de permissões após o login social.
+**Auto-Provisionamento**: Criação automática de perfil de utilizador e vinculação de permissões após o login social.
 
-Segurança com Spring Security 7: Uso extensivo de Lambda DSLs para configurações de filtros e autorização.
+**Segurança com Spring Security 7**: Uso extensivo de Lambda DSLs para configurações de filtros e autorização.
 
-RBAC (Role-Based Access Control): Hierarquia de permissões (ADMIN vs BASIC) protegendo endpoints específicos.
+**RBAC (Role-Based Access Control)**: Hierarquia de permissões (ADMIN vs BASIC) protegendo endpoints específicos.
 
-Observabilidade: Sistema de logs detalhados (SLF4J) para monitorização do fluxo de autenticação.
+**Observabilidade**: Sistema de logs detalhados (SLF4J) para monitorização do fluxo de autenticação.
 
-Persistência Segura: Gestão de base de dados MySQL integrada via Spring Data JPA.
+**Persistência Segura**: Gestão de base de dados MySQL integrada via Spring Data JPA.
 
+**Sistema de Micro-blogging (Tweets)**: Criação e visualização de conteúdo em tempo real integrado ao sistema de permissões.
+
+## 🏗️ Arquitetura de Autenticação
 ## 🛠️ Stack Tecnológica
+
 Linguagem: Java 21 (LTS)
 
 Framework: Spring Boot 4.0.2 / Spring Security 7
@@ -51,12 +55,17 @@ RSA Keys: Utilização de par de chaves assimétricas para assinatura de tokens.
 CORS: Configurado para permitir integrações seguras com frontends modernos (React/Next.js).
 
 ## 📋 Endpoints Principais
-| Método | Endpoint                             | Descrição                                   | Acesso         |
-|--------|--------------------------------------|---------------------------------------------|----------------|
-| POST   | /login                               | Autenticação local (retorna JWT)            | Público        |
-| GET    | /oauth2/authorization/google         | Inicia o fluxo de login com Google          | Público        |
-| POST   | /users                               | Registo de novos utilizadores               | Público        |
-| GET    | /feed                                | Visualização de tweets                      | Autenticado    |
+
+| Método | Endpoint                             | Descrição                                   | Acesso            |
+|--------|--------------------------------------|---------------------------------------------|-------------------|
+| POST   | /login                               | Autenticação local (retorna JWT)            | Público           |
+| GET    | /oauth2/authorization/google         | Inicia o fluxo de login com Google          | Público           |
+| POST   | /users                               | Registo de novos utilizadores               | Público           |
+| PUT    | /users/{id}                          | Atualização de nome e foto de user          | Autenticado       |
+| GET    | /feed                                | Visualização de tweets                      | Público           |
+| POST   | /tweets                              | Criação de novo tweet                       | Autenticado       |
+| DELETE | /tweets/{id}                         | Excruir tweet                               | Autenticado/Admin |
+
 
 ## ⚙️ Configuração do Ambiente
 Para manter a segurança, o projeto utiliza Variáveis de Ambiente.
