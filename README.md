@@ -80,7 +80,7 @@ CORS: Configurado para permitir integrações seguras com frontends modernos (Re
 | PUT    | /users/{id}                          | Atualização de nome e foto de user          | Autenticado       |
 | GET    | /feed                                | Visualização de tweets                      | Público           |
 | POST   | /tweets                              | Criação de novo tweet                       | Autenticado       |
-| DELETE | /tweets/{id}                         | Excruir tweet                               | Autenticado/Admin |
+| DELETE | /tweets/{id}                         | Excluir tweet                               | Autenticado/Admin |
 
 ## 🧩 Como testar o projeto
 
